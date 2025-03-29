@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مقلب الهكر</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@tailwindcss/browser@latest"></script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex justify-center items-center p-4">
+    <div class="bg-gray-800 rounded-lg shadow-xl p-8 max-w-md w-full">
+        <h1 class="text-2xl font-bold text-red-500 mb-6 text-center">تم اختراق جهازك!</h1>
+        <div id="hacking-animation" class="mb-6 text-green-500 text-center font-mono text-lg">
+            <p>[+] فحص المنافذ المفتوحة...</p>
+            <p>[+] محاولة الوصول إلى قاعدة البيانات...</p>
+            <p>[+] سرقة الملفات الحساسة...</p>
+            <p>[+] تعطيل النظام...</p>
+        </div>
+        <p id="message" class="text-gray-300 text-center mb-4">
+            انتظر حتى تكتمل العملية...
+        </p>
+         <div class="text-center">
+            <button id="restart-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hidden">
+                إعادة التشغيل
+            </button>
+        </div>
+    </div>
+    <script>
+        const hackingAnimationElement = document.getElementById("hacking-animation");
+        const messageElement = document.getElementById("message");
+        const restartButton = document.getElementById("restart-button");
+        const animationSteps = [
+            "[+] فحص المنافذ المفتوحة...",
+            "[+] محاولة الوصول إلى قاعدة البيانات...",
+            "[+] سرقة الملفات الحساسة...",
+            "[+] تعطيل النظام...",
+            "[+] تم تثبيت برامج التجسس...",
+            "[+] جارٍ جمع كلمات المرور...",
+            "[+] إرسال البيانات إلى خادم التحكم...",
+            "[+] اكتمل الاختراق بنجاح!",
+        ];
+        let stepIndex = 0;
+        let intervalId;
+        let windowsIntervalId;
+        let alarmSound;
+
+        function playAlarmSound() {
+            if (!alarmSound) {
+                alarmSound = new Audio("https://www.soundjay.com/buttons/sounds/alarm-01a.mp3"); // رابط لصوت الإنذار
+                alarmSound.loop = true; // قم بتشغيل الصوت بشكل متكرر
+                alarmSound.play();
+            }
+        }
+
+        function stopAlarmSound() {
+            if (alarmSound) {
+                alarmSound.pause();
+                alarmSound.currentTime = 0; // أعد الصوت إلى البداية
+                alarmSound = null;
+            }
+        }
+
+        function animateHacking() {
+            hackingAnimationElement.innerHTML += `<p class="text-green-500 font-mono text-lg">${animationSteps[stepIndex]}</p>`;
+            stepIndex++;
+            if (stepIndex >= animationSteps.length) {
+                clearInterval(intervalId);
+                messageElement.textContent = "تم الاختراق بنجاح! سيتم إعادة تشغيل الجهاز تلقائيًا خلال 5 ثواني...";
+                restartButton.classList.remove("hidden");
+                playAlarmSound(); // ابدأ تشغيل صوت الإنذار
+                // إضافة النوافذ المنبثقة
+                windowsIntervalId = setInterval(openHackingWindows, 200); // افتح نوافذ كل 200 مللي ثانية
+                setTimeout(() => {
+                    clearInterval(windowsIntervalId); // Stop opening windows
+                    stopAlarmSound(); // أوقف صوت الإنذار
+                    messageElement.textContent = "تمت إعادة التشغيل...";
+                    setTimeout(()=> {
+                        stepIndex = 0;
+                        hackingAnimationElement.innerHTML = '';
+                        messageElement.textContent = "انتظر حتى تكتمل العملية...";
+                        restartButton.classList.add("hidden");
+                        animateHacking();
+                    }, 2000);
+                }, 5000); // تأخير 5 ثواني قبل إعادة التشغيل
+            }
+        }
+
+        function openHackingWindows() {
+            const windowFeatures = "width=400,height=300,left=" + Math.random() * window.innerWidth + ",top=" + Math.random() * window.innerHeight;
+            window.open("", "_blank", windowFeatures);
+        }
+
+        intervalId = setInterval(animateHacking, 1500); // سرعة ظهور الخطوات
+        restartButton.addEventListener("click", () => {
+            stepIndex = 0;
+            hackingAnimationElement.innerHTML = '';
+            messageElement.textContent = "انتظر حتى تكتمل العملية...";
+            restartButton.classList.add("hidden");
+            stopAlarmSound();
+            animateHacking();
+        });
+    </script>
+</body>
+</html>
